@@ -23,6 +23,12 @@ pipeline {
             }
         }
         
+        stage('Set up Chrome') {
+            steps {
+                sh 'google-chrome --version' // Adjust this command based on your Jenkins environment
+            }
+        }
+        
         stage('Test with Maven') {
             steps {
                 sh 'mvn -B package --file pom.xml'
