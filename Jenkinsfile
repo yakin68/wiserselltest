@@ -1,5 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+        //cloud 'kubernetes'
+        containerTemplate {
+            name 'maven'
+            image 'maven:3-amazoncorretto-21'
+            command 'sleep'
+            args '99d'
+        }
+        }
+    }
     
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
@@ -15,65 +25,9 @@ pipeline {
             }
         }
         
-        stage('Build and Test') {
-            // Define a pod template with Maven and Amazon Corretto containers
-            podTemplate(containers: [
-                containerTemplate(name: 'maven', image: 'maven:3-amazoncorretto-21', command: 'sleep', args: '99d'),
-                containerTemplate(name: 'amazoncorretto', image: 'amazoncorretto:8u412-alpine3.19-jre', command: 'sleep', args: '99d')
-            ]) {
-                node(POD_LABEL) {
-                    // Inside the pod template, perform Maven build
-                    stage('Build a Maven project') {
-                        container('maven') {
-                            git 'https://github.com/jenkinsci/kubernetes-plugin.git'
-                            sh 'mvn -B -ntp clean install'
-                        }
-                    }
-                }
-            }
-        }
-        
-        stage('Set up JDK 19') {
+        stage('Run maven') {
             steps {
-                script {
-                    tool 'jdk-19' // Assuming JDK 19 is configured in Jenkins as a tool
-                }
-            }
-        }
-        
-        stage('Test with Maven') {
-            steps {
-                sh 'mvn -B package --file pom.xml'
-            }
-        }
-        
-        stage('Upload Test Results to S3') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    sh 'aws s3 cp target s3://${AWS_BUCKET}/target --recursive'
-                }
-            }
-        }
-        
-        stage('Slack Notification') {
-            when {
-                expression {
-                    currentBuild.result != null
-                }
-            }
-            steps {
-                script {
-                    def status = currentBuild.result
-                    def objectKey = sh(script: 'echo $S3_OBJECT_KEY', returnStdout: true).trim()
-                    def slackMessage = "Testing ${env.GITHUB_REF_NAME} branch for VERSION-2 AUTOMATION TESTS\n" +
-                                       "https://${AWS_BUCKET}.s3.us-east-1.amazonaws.com/${objectKey}/html-reports/Run_Smoke_Test.html"
-                    
-                    slackSend color: status == 'SUCCESS' ? 'good' : 'danger',
-                              message: slackMessage,
-                              channel: 'version-2-notification',
-                              teamDomain: 'your-slack-workspace-domain',
-                              tokenCredentialId: 'slack-token'
-                }
+                sh 'mvn -version'
             }
         }
     }
