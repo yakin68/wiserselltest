@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_BUCKET = 'dev2.wisersell.com'
+        AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
     }
     
@@ -15,24 +15,22 @@ pipeline {
             }
         }
         
-        stage('Build and Test') {
-            // Define a pod template with Maven and Amazon Corretto containers
-            podTemplate(containers: [
-                containerTemplate(name: 'maven', image: 'maven:3-amazoncorretto-21', command: 'sleep', args: '99d'),
-                containerTemplate(name: 'amazoncorretto', image: 'amazoncorretto:8u412-alpine3.19-jre', command: 'sleep', args: '99d')
-            ]) {
-                node(POD_LABEL) {
-                    // Inside the pod template, perform Maven build
-                    stage('Build a Maven project') {
-                        container('maven') {
-                            git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+        podTemplate(containers: [
+            containerTemplate(name: 'maven', image: 'maven:3-amazoncorretto-21', command: 'sleep', args: '99d'),
+            containerTemplate(name: 'golang', image: 'golang:1.16.5', command: 'sleep', args: '99d'),
+            containerTemplate(name: 'amazoncorretto', image: 'amazoncorretto:8u412-alpine3.19-jre', command: 'sleep', args: '99d')
+        ]) {
+            node(POD_LABEL) {
+                stage('Get a Maven project') {
+                    git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+                    container('maven') {
+                        stage('Build a Maven project') {
                             sh 'mvn -B -ntp clean install'
                         }
                     }
                 }
-            }
-        }
-        
+                // Diğer aşamalar buraya eklenebilir
+            }        
         stage('Set up JDK 19') {
             steps {
                 script {
@@ -66,7 +64,7 @@ pipeline {
                     def status = currentBuild.result
                     def objectKey = sh(script: 'echo $S3_OBJECT_KEY', returnStdout: true).trim()
                     def slackMessage = "Testing ${env.GITHUB_REF_NAME} branch for VERSION-2 AUTOMATION TESTS\n" +
-                                       "https://${AWS_BUCKET}.s3.us-east-1.amazonaws.com/${objectKey}/html-reports/Run_Smoke_Test.html"
+                                       "https://dev2.wisersell.com.s3.us-east-1.amazonaws.com/${objectKey}/html-reports/Run_Smoke_Test.html"
                     
                     slackSend color: status == 'SUCCESS' ? 'good' : 'danger',
                               message: slackMessage,
