@@ -1,35 +1,23 @@
 pipeline {
-    agent {
-        kubernetes {
-        //cloud 'kubernetes'
-        containerTemplate {
-            name 'maven'
-            image 'maven:3-amazoncorretto-21'
-            command 'sleep'
-            args '99d'
-        }
-        }
-    }
-    
-    environment {
-        AWS_KEY_ID = credentials('AWS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_BUCKET = 'dev2.wisersell.com'
-        SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
-    }
-    
+    agent any
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                // Git deposunu Jenkins çalışma alanına klonlama
+                git 'https://github.com/yakin68/wiserselltest.git'
             }
         }
-        
-        stage('Run maven') {
+        stage('Build') {
             steps {
-                container('maven') {
-                    sh 'mvn -version'
-                }
+                // Maven ile clean ve package komutlarını çalıştırma
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Maven ile test komutunu çalıştırma (isteğe bağlı)
+                sh 'mvn test'
             }
         }
     }
