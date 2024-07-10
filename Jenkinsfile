@@ -10,13 +10,10 @@ stages {
         stage('Test with Maven') {
             steps {
                 script {
-                    try {
-                        // Run Maven build in batch mode
-                        sh 'mvn -B package --file pom.xml'
-                    } catch (Exception e) {
-                        echo "Build failed: ${e.message}"
+                    def mvnStatus = sh(script: 'mvn -B package --file pom.xml', returnStatus: true)
+                    if (mvnStatus != 0) {
+                        echo "Maven build failed with exit code ${mvnStatus}"
                         currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
