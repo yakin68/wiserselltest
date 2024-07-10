@@ -26,14 +26,4 @@ stages {
             }
         }
     }
-
-    post {
-        always {
-            // Save the build results and artifacts regardless of the build result
-            junit 'target/surefire-reports/*.xml'
-            archiveArtifacts artifacts: 'target/**/*', allowEmptyArchive: true
-            // Optionally, you can clean up the workspace
-            cleanWs()
-        }
-    }
 }
