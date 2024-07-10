@@ -3,10 +3,7 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                // Git deposunu Jenkins çalışma alanına klonlama
-                git 'https://github.com/yakin68/wiserselltest.git'
-            }
+
         }
         stage('Build') {
             steps {
