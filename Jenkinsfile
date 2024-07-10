@@ -10,14 +10,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven ile clean ve package komutlarını çalıştırma
-                sh 'maven clean package'
+                sh 'mvn clean package'
 
             }
         }
         stage('Test') {
             steps {
                 // Maven ile test komutunu çalıştırma (isteğe bağlı)
-                sh 'maven test'
+                sh 'mvn test'
             }
         }
     }
