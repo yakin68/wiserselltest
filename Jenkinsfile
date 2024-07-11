@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
+        SLACK_TOKEN = credentials('SLACK_TOKEN')
     }
     
     tools {
