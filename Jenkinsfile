@@ -6,7 +6,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
-        wisersell-token = credentials('wisersell-token')
+        SLACK_WEBHOOK_TOKEN = credentials('wisersell-token')
     }
     
     tools {
