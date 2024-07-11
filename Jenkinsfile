@@ -32,13 +32,6 @@ stages {
                 archiveArtifacts artifacts: 'target/**/*', allowEmptyArchive: true
             }
         }
-        stage('Upload Test Results to S3') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    sh 'aws s3 cp target s3://${AWS_BUCKET}/target --recursive'
-                }
-            }
-        }
         
         stage('Notify Slack') {
             steps {
