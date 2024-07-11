@@ -53,7 +53,7 @@ stages {
                         channel: 'version-2-notification',
                         color: (status == 'SUCCESS' ? 'good' : 'danger'),
                         message: jsonPayload,
-                        webhookToken: SLACK_WEBHOOK_URL
+                        webhookUrl: SLACK_WEBHOOK_URL
                     )
                 }
             }
