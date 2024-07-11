@@ -36,6 +36,7 @@ stages {
         
         stage('Notify Slack') {
             steps {
+                slackSend channel: 'wisersell_test', message: '"Testing  branch for VERSION-2 AUTOMATION TESTS'
                 script {
                     def status = currentBuild.currentResult
                     def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
