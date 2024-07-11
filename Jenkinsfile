@@ -1,10 +1,7 @@
 pipeline {
     agent any
     
-    environment {
-        SLACK_TOKEN = credentials('SLACK_TOKEN')
-    }
-    
+   
     tools {
         maven 'maven'
     }
