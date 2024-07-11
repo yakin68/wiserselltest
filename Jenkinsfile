@@ -5,7 +5,7 @@ pipeline {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
-        SLACK_WEBHOOK_URL =  credentials('SLACK_WEBHOOK_URL')
+        SLACK_WEBHOOK_URL =  credentials('wisersell-token')
     }
     
     tools {
@@ -53,7 +53,7 @@ stages {
                         channel: 'version-2-notification',
                         color: (status == 'SUCCESS' ? 'good' : 'danger'),
                         message: jsonPayload,
-                        tokenCredentialId: slack-token
+                        tokenCredentialId: SLACK_WEBHOOK_URL
                     )
                 }
             }
