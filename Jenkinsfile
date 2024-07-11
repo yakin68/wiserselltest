@@ -50,10 +50,10 @@ stages {
                     def jsonPayload = new groovy.json.JsonBuilder(payload).toPrettyString()
 
                     slackSend(
-                        channel: 'version-2-notification',
+                        channel: 'wisersell_test',
                         color: (status == 'SUCCESS' ? 'good' : 'danger'),
                         message: jsonPayload,
-                        tokenCredentialId: SLACK_WEBHOOK_URL
+                        tokenCredentialId: wisersell-toke
                     )
                 }
             }
