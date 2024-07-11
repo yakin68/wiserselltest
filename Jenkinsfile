@@ -42,7 +42,7 @@ stages {
                     def payload = [
                         "status": status,
                         "steps": [ /* add step information if necessary */ ],
-                        "channel": 'version-2-notification',
+                        "channel": 'wisersell_test',
                         "config": readFile('.github/config/slack-main.yaml'),
                         "message": "Testing ${branchName} branch for VERSION-2 AUTOMATION TESTS"
                     ]
@@ -53,7 +53,7 @@ stages {
                         channel: 'wisersell_test',
                         color: (status == 'SUCCESS' ? 'good' : 'danger'),
                         message: jsonPayload,
-                        tokenCredentialId: wisersell-toke
+                        tokenCredentialId: 'wisersell-token'
                     )
                 }
             }
