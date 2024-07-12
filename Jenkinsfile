@@ -19,7 +19,8 @@ stages {
         stage('Install curl') {
             steps {
                 sh ''' ./curl.sh   '''
-            }    
+            }  
+        }    
         stage('Notify Slack') {
             steps {
                 slackSend channel: 'devops', message: '"Testing  branch for VERSION-2 AUTOMATION TESTS'
