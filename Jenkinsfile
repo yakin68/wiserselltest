@@ -18,6 +18,7 @@ stages {
 
         stage('Install curl') {
             steps {
+                sh 'chmod +x ./curl.sh'
                 sh ''' ./curl.sh   '''
             }  
         }    
