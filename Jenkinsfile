@@ -21,6 +21,7 @@ stages {
                 sh '''
                 sudo apt-get update
                 sudo apt-get install -y curl
+                sh "curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
                 '''
             }    
         stage('Notify Slack') {
@@ -41,7 +42,7 @@ stages {
                     def jsonPayload = new groovy.json.JsonBuilder(payload).toPrettyString()
                     
                     // Send the notification to Slack
-                    sh "curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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"
+                    //sh "curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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"
                     //sh "curl -X POST -H 'Content-type: application/json' --data '${jsonPayload}' ${env.SLACK_WEBHOOK_URL}"
                     
                     slackSend(
