@@ -26,7 +26,7 @@ stages {
                     def jsonPayload = new groovy.json.JsonBuilder(payload).toPrettyString()
                     
                     // Send the notification to Slack
-                    sh "curl -X POST -H 'Content-type: application/json' --data '${jsonPayload}' ${env.SLACK_WEBHOOK_URL}"
+                    // sh "curl -X POST -H 'Content-type: application/json' --data '${jsonPayload}' ${env.SLACK_WEBHOOK_URL}"
                     
                     slackSend(
                         channel: 'devops',
