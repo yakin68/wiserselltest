@@ -41,7 +41,7 @@ pipeline {
                 			"type": "section",
                 			"text": [
                 				"type": "mrkdwn",
-                				"text": "Why not join <#C024BE7LR|devops>?"
+                				"text": "Why not join <#C07CG6A2R8R|devops>?"
                 			]
                 		],                        
                     	[
