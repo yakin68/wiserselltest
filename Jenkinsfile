@@ -7,7 +7,7 @@ pipeline {
         AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
         SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
-        SLACK_CREDENTIAL_ID = credentials('slack-bot-token-son')
+        SLACK_CREDENTIAL_ID = 'slack-bot-token-son'
     }    
    
     tools {
