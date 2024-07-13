@@ -7,6 +7,7 @@ pipeline {
         AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
         SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
+        SLACK_CREDENTIAL_ID = credentials('slack-bot-token-son')
     }    
    
     tools {
@@ -16,12 +17,7 @@ pipeline {
 
 stages {
 
-        stage('Install curl') {
-            steps {
-                sh 'chmod +x ./curl.sh'
-                sh ''' ./curl.sh   '''
-            }  
-        }    
+  
         stage('Notify Slack') {
             steps {
                 slackSend channel: 'devops', message: '"Testing  branch for VERSION-2 AUTOMATION TESTS'
@@ -47,11 +43,17 @@ stages {
                         channel: 'devops',
                         color: (status == 'SUCCESS' ? 'good' : 'danger'),
                         text: jsonPayload,
-                        //tokenCredentialId: 'wisersell-token'
+                        tokenCredentialId: env.SLACK_CREDENTIAL_ID
                     )
                 }
 
             }
         }
+        stage('Send the notification to Slack') {
+            steps {
+                sh 'chmod +x ./curl.sh'
+                sh ''' ./curl.sh   '''
+            }  
+        }      
     }
 }
