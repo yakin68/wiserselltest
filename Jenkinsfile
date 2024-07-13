@@ -37,6 +37,13 @@ pipeline {
                         [
                     		"type": "divider"
                     	],
+                        [
+                			"type": "section",
+                			"text": [
+                				"type": "mrkdwn",
+                				"text": "Why not join <#C024BE7LR|devops>?"
+                			]
+                		],                        
                     	[
                     		"type": "section",
                     		"text": [
