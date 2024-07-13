@@ -44,12 +44,14 @@ pipeline {
 
         stage('Send the notification to Slack via curl') {
             steps {
+                script {
                     def status = currentBuild.currentResult
                     def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
                     sh "chmod +x ./curl.sh"
                     sh """
                     status=${status} branchName=${branchName} ./curl.sh
                     """
+                }
             }
         }
     }
