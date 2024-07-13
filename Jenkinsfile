@@ -18,26 +18,15 @@ pipeline {
         stage('Notify Slack') {
             steps {
                 script {
-                    def status = currentBuild.currentResult
-                    def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
-
-                    def payload = [
-                        "status": status,
-                        "steps": [], // add step information if necessary
-                        "channel": 'devops',
-                        "config": readFile('.github/config/slack-main.yaml'),
-                        "text": "Testing ${branchName} branch for VERSION-2 AUTOMATION TESTS-NEWW"
+                    def attachments = [
+                      [
+                        text: 'I find your lack of faith disturbing!',
+                        fallback: 'Hey, Vader seems to be mad at you.',
+                        color: '#ff0000'
+                      ]
                     ]
-
-                    def jsonPayload = new groovy.json.JsonBuilder(payload).toPrettyString()
-
-                    // Send the notification to Slack
-                    slackSend(
-                        channel: 'devops',
-                        color: (status == 'SUCCESS' ? 'good' : 'danger'),
-                        message: jsonPayload,
-                        tokenCredentialId: env.SLACK_CREDENTIAL_ID
-                    )
+                    
+                    slackSend(channel: "#devops", attachments: attachments)
                 }
             }
         }
