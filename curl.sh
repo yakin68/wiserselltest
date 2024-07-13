@@ -1,20 +1,16 @@
 #!/bin/bash
-// curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
 
-                    def status = currentBuild.currentResult
-                    def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
+# Define the JSON payload
+jsonPayload=$(cat <<EOF
+{
+    "status": "${status}",
+    "steps": [],
+    "channel": "devops",
+    "config": "$(cat .github/config/slack-main.yaml)",
+    "text": "Testing ${branchName} branch for VERSION-2 AUTOMATION TESTS-NEWW"
+}
+EOF
+)
 
-                    def payload = [
-                        "status": status,
-                        "steps": [ /* add step information if necessary */ ],
-                        "channel": 'devops',
-                        "config": readFile('.github/config/slack-main.yaml'),
-                        "text": "Testing ${branchName} branch for VERSION-2 AUTOMATION TESTS-NEWW"
-                    ]
-
-                    def jsonPayload = new groovy.json.JsonBuilder(payload).toPrettyString()
-                    
-                    // Send the notification to Slack
-                    //sh "curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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"
-                    //sh "curl -X POST -H 'Content-type: application/json' --data '${jsonPayload}' ${env.SLACK_WEBHOOK_URL}"
-curl -X POST -H 'Content-type: application/json' --data '${jsonPayload}' ${env.SLACK_WEBHOOK_URL}"
+# Send the notification to Slack
+curl -X POST -H 'Content-type: application/json' --data "$jsonPayload" "${SLACK_WEBHOOK_URL}"
