@@ -6,7 +6,7 @@ jsonPayload=$(cat <<EOF
     "status": "${status}",
     "steps": [],
     "channel": "devops",
-    "config": "$(cat .github/config/slack-main.yaml)",
+    "config": "username: WISERSELL-API-V2-TESTING\nicon_url: https://github.com/wisesell/wisersell-api/blob/dev/nodejs.svg\n\n...",
     "text": "Testing ${branchName} branch for VERSION-2 AUTOMATION TESTS-NEWW"
 }
 EOF
