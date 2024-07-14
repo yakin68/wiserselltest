@@ -88,12 +88,13 @@ def sendSlackNotification(stageResults) {
     def gitUser = env.GIT_USER ?: 'Unknown User'
     def commitDate = env.COMMIT_DATE ?: 'Unknown Date'
     def repoName = env.GIT_REPO_NAME ?: 'Unknown Repo'
+    def repoNameUpper = repoName.toUpperCase()
     def blocks = [
         [
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Repository:* > *_${repoName}_*\n*Commit Date:* ${commitDate}\n*Job Status:* ${status}\n*Triggered by:* ${gitUser}\n*Job Steps:*\n${env.STAGE_RESULTS}"
+                "text": "*Repository:* > *_${repoNameUpper}_*\n*Commit Date:* ${commitDate}\n*Job Status:* ${status}\n*Triggered by:* ${gitUser}\n*Job Steps:*\n${env.STAGE_RESULTS}"
             ]
         ]
     ]
