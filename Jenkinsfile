@@ -15,6 +15,13 @@ pipeline {
     }
 
     stages {
+        
+        steps {
+            script {
+                echo "Current branch: ${env.BRANCH_NAME}"
+            }
+        }
+        
         stage('Initialize') {
             steps {
                 script {
