@@ -77,6 +77,7 @@ def sendSlackNotification(stageResults) {
             "text": [
                 "type": "mrkdwn",
                 "text": "*Pipeline* finished with status: ${status}\n${stageResults}"
+                "text": "*Job Status:* ${status}\n*Triggered by:* ${env.BUILD_USER}\n*Job Steps:*\n${stageResults}"
             ]
         ]
     ]
