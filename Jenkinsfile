@@ -15,6 +15,14 @@ pipeline {
     }
 
     stages {
+        stage (echo test) {
+            steps {
+                script { 
+                    sh '''echo "yakin stage test" '''                    
+                       }
+            }
+        }
+        
         stage('Notify Slack') {
             steps {
                 script {
