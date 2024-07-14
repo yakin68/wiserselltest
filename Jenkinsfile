@@ -94,7 +94,7 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "*Pipeline* finished with status: ${status}"
+                            "text": "*Pipeline* finished with status: ${status}\n${stagesInfo}}"
                         ]
                     ]
                 ]
@@ -122,7 +122,7 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "*Pipeline* failed."
+                            "text": "*Pipeline* failed.${status}\n${stagesInfo}}"
                         ]
                     ]
                 ]
