@@ -89,6 +89,7 @@ pipeline {
         always {
             script {
                 def status = currentBuild.currentResult
+                def stagesInfo = currentBuild.description ?: ""
                 def blocks = [
                     [
                         "type": "section",
