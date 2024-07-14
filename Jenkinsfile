@@ -85,4 +85,49 @@ pipeline {
             }
         }
     }
+ post {
+        always {
+            script {
+                def status = currentBuild.currentResult
+                def blocks = [
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "*Pipeline* finished with status: ${status}"
+                        ]
+                    ]
+                ]
+                slackSend(channel: "#devops", blocks: blocks)
+            }
+        }
+        success {
+            script {
+                def blocks = [
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "*Pipeline* succeeded."
+                        ]
+                    ]
+                ]
+                slackSend(channel: "#devops", blocks: blocks)
+            }
+        }
+        failure {
+            script {
+                def blocks = [
+                    [
+                        "type": "section",
+                        "text": [
+                            "type": "mrkdwn",
+                            "text": "*Pipeline* failed."
+                        ]
+                    ]
+                ]
+                slackSend(channel: "#devops", blocks: blocks)
+            }
+        }
+    }
 }
