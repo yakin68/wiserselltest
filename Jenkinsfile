@@ -25,7 +25,16 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Get Git User') {
+            steps {
+                script {
+                    def gitUser = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
+                    env.GIT_USER = gitUser ?: 'Unknown User'
+                }
+            }
+        }
+        
         stage('echo test') {
             steps {
                 script {
@@ -71,7 +80,7 @@ pipeline {
 
 def sendSlackNotification(stageResults) {
     def status = currentBuild.currentResult
-    def gitUser = env.GIT_AUTHOR_NAME ?: 'Unknown User'
+    def gitUser = env.GIT_USER ?: 'Unknown User'
     def blocks = [
         [
             "type": "section",
