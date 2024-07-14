@@ -15,7 +15,7 @@ pipeline {
     }
 
     stages {
-        stage (echo test) {
+        stage ('echo test') {
             steps {
                 script { 
                     sh '''echo "yakin stage test" '''                    
