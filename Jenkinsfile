@@ -31,9 +31,9 @@ pipeline {
                 script {
                     try {
                         sh '''echo "yakin stage test" '''
-                        env.STAGE_RESULTS += "Stage: echo test - SUCCESS\n"
+                        env.STAGE_RESULTS += "Stage: echo test - SUCCESS :tada:\n"  // Success emoji
                     } catch (Exception e) {
-                        env.STAGE_RESULTS += "Stage: echo test - FAILURE\n"
+                        env.STAGE_RESULTS += "Stage: echo test - FAILURE :x:\n"    // Failure emoji
                         throw e
                     }
                 }
@@ -50,9 +50,9 @@ pipeline {
                         sh """
                         status=${status} branchName=${branchName} ./curl.sh
                         """
-                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - SUCCESS\n"
+                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - SUCCESS :tada:\n"  // Success emoji
                     } catch (Exception e) {
-                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - FAILURE\n"
+                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - FAILURE :x:\n"    // Failure emoji
                         throw e
                     }
                 }
