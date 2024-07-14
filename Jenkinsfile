@@ -30,7 +30,9 @@ pipeline {
             steps {
                 script {
                     def gitUser = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
+                    def commitDate = sh(script: "git log -1 --pretty=format:'%cd'", returnStdout: true).trim()
                     env.GIT_USER = gitUser ?: 'Unknown User'
+                    env.COMMIT_DATE = commitDate ?: 'Unknown Date'
                 }
             }
         }
@@ -81,12 +83,14 @@ pipeline {
 def sendSlackNotification(stageResults) {
     def status = currentBuild.currentResult
     def gitUser = env.GIT_USER ?: 'Unknown User'
+    def commitDate = env.COMMIT_DATE ?: 'Unknown Date'
+    def repoName = env.GIT_REPO_NAME ?: 'Unknown Repo'
     def blocks = [
         [
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Job Status:* ${status}\n*Triggered by:* ${gitUser}*Job Steps:*\n${stageResults}"
+                "text": "*Repository:* ${repoName}\n*Commit Date:* ${commitDate}\n*Job Status:* ${status}\n*Triggered by:* ${gitUser}\n*Job Steps:*\n${env.STAGE_RESULTS}"
             ]
         ]
     ]
