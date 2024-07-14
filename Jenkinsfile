@@ -31,7 +31,7 @@ pipeline {
                 script {
                     try {
                         sh '''echo "yakin stage test" '''
-                        env.STAGE_RESULTS += "Stage: echo test - SUCCESS :x:\n"  // Success emoji
+                        env.STAGE_RESULTS += "Stage: x: echo test - SUCCESS :smile:\n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: echo test - FAILURE :x:\n"    // Failure emoji
                         throw e
