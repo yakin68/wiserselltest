@@ -18,8 +18,10 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    // Global list to hold stage results
-                    currentBuild.stageResults = []
+                    // Initialize an empty list to hold stage results
+                    def stageResults = []
+                    // Store the list in the environment variable for later use
+                    env.STAGE_RESULTS = stageResults
                 }
             }
         }
@@ -29,9 +31,9 @@ pipeline {
                 script {
                     try {
                         sh '''echo "yakin stage test" '''
-                        currentBuild.stageResults.add("Stage: echo test - SUCCESS")
+                        env.STAGE_RESULTS += "Stage: echo test - SUCCESS\n"
                     } catch (Exception e) {
-                        currentBuild.stageResults.add("Stage: echo test - FAILURE")
+                        env.STAGE_RESULTS += "Stage: echo test - FAILURE\n"
                         throw e
                     }
                 }
@@ -48,9 +50,9 @@ pipeline {
                         sh """
                         status=${status} branchName=${branchName} ./curl.sh
                         """
-                        currentBuild.stageResults.add("Stage: Send the notification to Slack via curl - SUCCESS")
+                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - SUCCESS\n"
                     } catch (Exception e) {
-                        currentBuild.stageResults.add("Stage: Send the notification to Slack via curl - FAILURE")
+                        env.STAGE_RESULTS += "Stage: Send the notification to Slack via curl - FAILURE\n"
                         throw e
                     }
                 }
@@ -61,7 +63,7 @@ pipeline {
     post {
         always {
             script {
-                sendSlackNotification(currentBuild.stageResults)
+                sendSlackNotification(env.STAGE_RESULTS)
             }
         }
     }
@@ -69,13 +71,12 @@ pipeline {
 
 def sendSlackNotification(stageResults) {
     def status = currentBuild.currentResult
-    def stagesInfo = stageResults.join("\n")
     def blocks = [
         [
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Pipeline* finished with status: ${status}\n${stagesInfo}"
+                "text": "*Pipeline* finished with status: ${status}\n${stageResults}"
             ]
         ]
     ]
