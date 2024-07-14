@@ -31,8 +31,11 @@ pipeline {
                 script {
                     def gitUser = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
                     def commitDate = sh(script: "git log -1 --pretty=format:'%cd'", returnStdout: true).trim()
+                    def repoName = sh(script: "basename `git rev-parse --show-toplevel`", returnStdout: true).trim()
+
                     env.GIT_USER = gitUser ?: 'Unknown User'
                     env.COMMIT_DATE = commitDate ?: 'Unknown Date'
+                    env.GIT_REPO_NAME = repoName ?: 'Unknown Repo'
                 }
             }
         }
