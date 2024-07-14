@@ -71,7 +71,7 @@ pipeline {
 
 def sendSlackNotification(stageResults) {
     def status = currentBuild.currentResult
-    def gitUser = env.GIT_COMMITTER_NAME ?: 'Unknown User'
+    def gitUser = env.GIT_AUTHOR_NAME ?: 'Unknown User'
     def blocks = [
         [
             "type": "section",
