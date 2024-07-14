@@ -14,14 +14,26 @@ pipeline {
         maven 'maven'
     }
 
-    // Global list to hold stage results
-    def stageResults = []
-
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Global list to hold stage results
+                    currentBuild.stageResults = []
+                }
+            }
+        }
+
         stage('echo test') {
             steps {
                 script {
-                    sh '''echo "yakin stage test" '''
+                    try {
+                        sh '''echo "yakin stage test" '''
+                        currentBuild.stageResults.add("Stage: echo test - SUCCESS")
+                    } catch (Exception e) {
+                        currentBuild.stageResults.add("Stage: echo test - FAILURE")
+                        throw e
+                    }
                 }
             }
         }
@@ -29,12 +41,18 @@ pipeline {
         stage('Send the notification to Slack via curl') {
             steps {
                 script {
-                    def status = currentBuild.currentResult
-                    def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
-                    sh "chmod +x ./curl.sh"
-                    sh """
-                    status=${status} branchName=${branchName} ./curl.sh
-                    """
+                    try {
+                        def status = currentBuild.currentResult
+                        def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
+                        sh "chmod +x ./curl.sh"
+                        sh """
+                        status=${status} branchName=${branchName} ./curl.sh
+                        """
+                        currentBuild.stageResults.add("Stage: Send the notification to Slack via curl - SUCCESS")
+                    } catch (Exception e) {
+                        currentBuild.stageResults.add("Stage: Send the notification to Slack via curl - FAILURE")
+                        throw e
+                    }
                 }
             }
         }
@@ -43,11 +61,7 @@ pipeline {
     post {
         always {
             script {
-                // Add results to the global list
-                stageResults.add("Stage: echo test - SUCCESS")
-                stageResults.add("Stage: Send the notification to Slack via curl - SUCCESS")
-
-                sendSlackNotification(stageResults)
+                sendSlackNotification(currentBuild.stageResults)
             }
         }
     }
