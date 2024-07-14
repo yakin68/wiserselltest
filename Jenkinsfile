@@ -14,12 +14,15 @@ pipeline {
         maven 'maven'
     }
 
+    // Global list to hold stage results
+    def stageResults = []
+
     stages {
-        stage ('echo test') {
+        stage('echo test') {
             steps {
-                script { 
-                    sh '''echo "yakin stage test" '''                    
-                       }
+                script {
+                    sh '''echo "yakin stage test" '''
+                }
             }
         }
         
@@ -36,50 +39,31 @@ pipeline {
             }
         }
     }
- post {
+
+    post {
         always {
             script {
-                def status = currentBuild.currentResult
-                def stagesInfo = currentBuild.description ?: ""
-                def blocks = [
-                    [
-                        "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*Pipeline* finished with status: ${status}\n${stagesInfo}}"
-                        ]
-                    ]
-                ]
-                slackSend(channel: "#devops", blocks: blocks)
-            }
-        }
-        success {
-            script {
-                def blocks = [
-                    [
-                        "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*Pipeline* succeeded."
-                        ]
-                    ]
-                ]
-                slackSend(channel: "#devops", blocks: blocks)
-            }
-        }
-        failure {
-            script {
-                def blocks = [
-                    [
-                        "type": "section",
-                        "text": [
-                            "type": "mrkdwn",
-                            "text": "*Pipeline* failed.${status}\n${stagesInfo}}"
-                        ]
-                    ]
-                ]
-                slackSend(channel: "#devops", blocks: blocks)
+                // Add results to the global list
+                stageResults.add("Stage: echo test - SUCCESS")
+                stageResults.add("Stage: Send the notification to Slack via curl - SUCCESS")
+
+                sendSlackNotification(stageResults)
             }
         }
     }
+}
+
+def sendSlackNotification(stageResults) {
+    def status = currentBuild.currentResult
+    def stagesInfo = stageResults.join("\n")
+    def blocks = [
+        [
+            "type": "section",
+            "text": [
+                "type": "mrkdwn",
+                "text": "*Pipeline* finished with status: ${status}\n${stagesInfo}"
+            ]
+        ]
+    ]
+    slackSend(channel: "#devops", blocks: blocks)
 }
