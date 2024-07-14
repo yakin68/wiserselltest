@@ -71,12 +71,13 @@ pipeline {
 
 def sendSlackNotification(stageResults) {
     def status = currentBuild.currentResult
+    def gitUser = env.GIT_COMMITTER_NAME ?: 'Unknown User'
     def blocks = [
         [
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Job Status:* ${status}\n*Triggered by:* ${env.BUILD_USER}\n*Job Steps:*\n${stageResults}"
+                "text": "*Job Status:* ${status}\n*Triggered by:* ${gitUser}*Job Steps:*\n${stageResults}"
             ]
         ]
     ]
