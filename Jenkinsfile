@@ -70,10 +70,6 @@ pipeline {
                     try {
                         def status = currentBuild.currentResult
                         def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
-                        sh "chmod +x ./curl.sh"
-                        sh """
-                        status=${status} branchName=${branchName} ./curl.sh
-                        """
                         env.STAGE_RESULTS += "Stage: :white_check_mark: Send the notification to Slack via curl - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: :x: Send the notification to Slack via curl - FAILURE \n"    // Failure emoji
@@ -106,7 +102,7 @@ def sendSlackNotification(stageResults) {
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*bbbb:* ${env.BRANCH_NAME} \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
+                "text": "*Branc Name:* ${env.BRANCH_NAME} \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
             ]
         ]
     ]
