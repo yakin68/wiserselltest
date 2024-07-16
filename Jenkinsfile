@@ -26,11 +26,11 @@ pipeline {
             steps {
                 script {
                     // Fetch the current branch name
-                    def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-                    if (branchName == 'HEAD') {
-                        // Fallback for detached HEAD
-                        branchName = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    }
+                    def branchName = sh(script: '''
+                        git fetch origin
+                        git branch -r --contains $(git rev-parse HEAD) | grep -v "origin/HEAD" | head -n 1 | sed "s|origin/||"
+                    ''', returnStdout: true).trim()
+
                     echo "Current branch: ${branchName}"
                 }
             }
