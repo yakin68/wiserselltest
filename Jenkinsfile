@@ -35,7 +35,22 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('List S3 Bucket Contents') {
+            steps {
+                script {
+                    try {
+                        sh '''
+                            aws s3 ls
+                        '''
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: List S3 Bucket Contents - SUCCESS \n"  // Success emoji
+                    } catch (Exception e) {
+                        env.STAGE_RESULTS += "Stage: :x: List S3 Bucket Contents - FAILURE \n"    // Failure emoji
+                        throw e
+                    }
+                }
+            }
+        }    
         stage('echo test') {
             steps {
                 script {
