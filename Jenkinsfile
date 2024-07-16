@@ -68,8 +68,6 @@ pipeline {
             steps {
                 script {
                     try {
-                        def status = currentBuild.currentResult
-                        def branchName = env.GIT_BRANCH.replaceAll('origin/', '')
                         env.STAGE_RESULTS += "Stage: :white_check_mark: Send the notification to Slack via curl - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: :x: Send the notification to Slack via curl - FAILURE \n"    // Failure emoji
