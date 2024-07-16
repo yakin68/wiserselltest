@@ -39,7 +39,7 @@ pipeline {
                     env.GIT_REPO_NAME = repoName ?: 'Unknown Repo'
                     
                     // Git branch adını almak için komut
-
+                }
             }
         }
         
