@@ -39,8 +39,7 @@ pipeline {
                     env.GIT_REPO_NAME = repoName ?: 'Unknown Repo'
                     
                     // Git branch adını almak için komut
-                    def branchName = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-                    env.GITHUB_BRANCH_NAME = branchName ?: 'Unknown Branch'                }
+
             }
         }
         
@@ -87,14 +86,14 @@ def sendSlackNotification(stageResults) {
     def commitDate = env.COMMIT_DATE ?: 'Unknown Date'
     def repoName = env.GIT_REPO_NAME ?: 'Unknown Repo'
     def repoNameUpper = repoName.toUpperCase()
-    def branchName = env.GITHUB_BRANCH_NAME // GitHub branch adını al
+    def branchName = env.GIT_BRANCH // GitHub branch adını al
     def reportUrl = "https://dev2.wisersell.com.s3.us-east-1.amazonaws.com/${env.STEP_S3_OUTPUT_OBJECT_KEY}/html-reports/Run_Smoke_Test.html"
     def blocks = [
         [
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Branc Name:* ${env.BRANCH_NAME}  *Branc Name:* ${env.BRANCH_NAME} \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
+                "text": "*Branc Name:* ${env.GIT_BRANCH}  \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
             ]
         ]
     ]
