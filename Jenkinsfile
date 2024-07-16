@@ -15,14 +15,26 @@ pipeline {
     }
 
     stages {
-        stage ('b name') {
+        
+        stage('Checkout') {
             steps {
-                script {
-                    echo "Current branch: ${env.BRANCH_NAME}"
-                }
+                checkout scm
             }
         }
 
+        stage('Get Branch Name') {
+            steps {
+                script {
+                    // Fetch the current branch name
+                    def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    if (branchName == 'HEAD') {
+                        // Fallback for detached HEAD
+                        branchName = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    }
+                    echo "Current branch: ${branchName}"
+                }
+            }
+        }        
         
         stage('Get Git User') {
             steps {
@@ -91,7 +103,7 @@ def sendSlackNotification(stageResults) {
             "type": "section",
             "text": [
                 "type": "mrkdwn",
-                "text": "*Branc Name:* ${env.BRANCH_NAME} \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
+                "text": "*Branc Name:* ${env.BRANCH_NAME}  *Branc Name:* ${env.BRANCH_NAME} \n*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}\n *Job Status:* ${status}    *Actor:* ${gitUser}    *Branch:* ${branchName}\n *Report URL:* <${reportUrl}|Run Smoke Test>\n *Job Steps:*\n${env.STAGE_RESULTS}"
             ]
         ]
     ]
