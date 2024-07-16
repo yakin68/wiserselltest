@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    agent {
+        docker {image 'amazon/aws-cli' }
+    }
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
