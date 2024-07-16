@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_BUCKET = 'arn:aws:s3:::dev2.wisersell.com'
+        AWS_BUCKET = 'arn:aws:s3:::yuceltest'
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
         SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
         SLACK_CREDENTIAL_ID = 'slack-bot-token-son'
