@@ -18,23 +18,14 @@ pipeline {
         
         stage('Checkout') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Get Branch Name') {
-            steps {
                 script {
-                    // Fetch the current branch name
-                    def branchName = sh(script: '''
-                        git fetch origin
-                        git branch -r --contains $(git rev-parse HEAD) | grep -v "origin/HEAD" | head -n 1 | sed "s|origin/||"
-                    ''', returnStdout: true).trim()
-
+                    // Fetch branch name from Git SCM
+                    def scmVars = checkout scm
+                    def branchName = scmVars.GIT_BRANCH ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                     echo "Current branch: ${branchName}"
                 }
             }
-        }        
+        }       
         
         stage('Get Git User') {
             steps {
