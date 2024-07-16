@@ -15,30 +15,23 @@ pipeline {
     }
 
     stages {
-        
-        stage('Checkout') {
+                
+        stage('Get Git User') {
             steps {
                 script {
+
                     // Fetch branch name from Git SCM
                     def scmVars = checkout scm
                     def branchName = scmVars.GIT_BRANCH ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                     echo "Current branch: ${branchName}"
-                }
-            }
-        }       
-        
-        stage('Get Git User') {
-            steps {
-                script {
+                    
                     def gitUser = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
                     def commitDate = sh(script: "git log -1 --pretty=format:'%cd'", returnStdout: true).trim()
                     def repoName = sh(script: "basename `git rev-parse --show-toplevel`", returnStdout: true).trim()
 
                     env.GIT_USER = gitUser ?: 'Unknown User'
                     env.COMMIT_DATE = commitDate ?: 'Unknown Date'
-                    env.GIT_REPO_NAME = repoName ?: 'Unknown Repo'
-                    
-                    // Git branch adını almak için komut
+                    env.GIT_REPO_NAME = repoName ?: 'Unknown Repo' 
                 }
             }
         }
