@@ -56,16 +56,16 @@ pipeline {
 
         stage('Archive Test Results') {
             steps {
-                // Archive the test results
-                archiveArtifacts artifacts: 'target/**/*', allowEmptyArchive: true
                 script {
                     try {
+                        archiveArtifacts artifacts: 'target/**/*', allowEmptyArchive: true
                         env.STAGE_RESULTS += "Stage: :white_check_mark: Archive Test Results - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: :x: Archive Test Results - FAILURE \n"    // Failure emoji
+                        currentBuild.result = 'FAILURE'
                         throw e
                     }
-                }                
+                }
             }
         }        
     }
