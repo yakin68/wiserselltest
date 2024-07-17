@@ -6,7 +6,7 @@ pipeline {
             kind: Pod
             metadata:
               labels:
-                app: jenkins-server            
+                jenkins: slave            
             spec:
               containers:
               - name: jnlp
