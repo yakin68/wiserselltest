@@ -9,7 +9,7 @@ pipeline {
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
         SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
         SLACK_CREDENTIAL_ID = 'slack-bot-token-son'
-        STAGE_RESULTS = ''
+
     }
 
     tools {
