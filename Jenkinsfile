@@ -12,7 +12,7 @@ pipeline {
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
-                args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+                args: ['-url', 'https://jenkins.wisersell.com', '-workDir', '/home/jenkins/agent']
                 resources:
                   requests:
                     memory: "256Mi"
