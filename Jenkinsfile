@@ -17,6 +17,15 @@ pipeline {
     }
 
     stages {
+
+        stage('Initialize') {
+            steps {
+                script {
+                    // Initialize an empty string to hold stage results
+                    env.STAGE_RESULTS = ''
+                }
+            }
+        }        
         
         stage('Get Git User') {
             steps {
