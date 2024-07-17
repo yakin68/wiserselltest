@@ -38,48 +38,41 @@ pipeline {
                 }
             }
         }
-        
-        stage('echo test 1') {
+
+        stage('Test with Maven') {
             steps {
                 script {
+                    def mvnStatus = sh(script: 'mvn -B package --file pom.xml', returnStatus: true)
+                    if (mvnStatus != 0) {
+                        echo "Maven build failed with exit code ${mvnStatus}"
+                        currentBuild.result = 'FAILURE'
+                    }
                     try {
                         sh '''echo "yakin stage test 1" '''
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: echo test 1 - SUCCESS \n"  // Success emoji
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: Test with Maven - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
-                        env.STAGE_RESULTS += "Stage: :x: echo test 1 - FAILURE \n"    // Failure emoji
+                        env.STAGE_RESULTS += "Stage: :x: Test with Maven - FAILURE \n"    // Failure emoji
                         throw e
-                    }
+                    }                    
                 }
             }
         }
 
-        stage('echo test 2') {
+        stage('Archive Test Results') {
             steps {
-                script {
-                    try {
-                        sh '''echo "yakin stage test 2" '''
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: echo test 2 - SUCCESS \n"  // Success emoji
-                    } catch (Exception e) {
-                        env.STAGE_RESULTS += "Stage: :x: echo test 2 - FAILURE \n"    // Failure emoji
-                        throw e
-                    }
-                }
-            }
-        }
-        
-        stage('Send the notification to Slack via curl') {
-            steps {
+                // Archive the test results
+                archiveArtifacts artifacts: 'target/**/*', allowEmptyArchive: true
                 script {
                     try {
 
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: Send the notification to Slack via curl - SUCCESS \n"  // Success emoji
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: Archive Test Results - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
-                        env.STAGE_RESULTS += "Stage: :x: Send the notification to Slack via curl - FAILURE \n"    // Failure emoji
+                        env.STAGE_RESULTS += "Stage: :x: Archive Test Results - FAILURE \n"    // Failure emoji
                         throw e
                     }
-                }
+                }                
             }
-        }
+        }        
     }
 
     post {
