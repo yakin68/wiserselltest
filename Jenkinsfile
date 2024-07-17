@@ -8,7 +8,7 @@ pipeline {
         SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
         SLACK_WEBHOOK_TOKEN = credentials('SLACK_WEBHOOK_TOKEN')
         SLACK_CREDENTIAL_ID = 'slack-bot-token-son'
-        STAGE_RESULTS = ''
+
     }
 
     tools {
@@ -20,10 +20,11 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    // Initialize an empty list to hold stage results
 
+                    // Initialize an empty list to hold stage results
+                    def stageResults = []
                     // Store the list in the environment variable for later use
-                    env.STAGE_RESULTS = ''
+                    env.STAGE_RESULTS = stageResults
                 }
             }
         }
