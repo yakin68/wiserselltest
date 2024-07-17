@@ -105,10 +105,10 @@ def sendSlackNotification(stageResults) {
             "text": [
                 "type": "mrkdwn",
                 "text": """*Repository:* > *_${repoNameUpper}_*       *Commit Date:* ${commitDate}
-    *Branch:* ${branchName}    *Job Status:* ${status}    *Actor:* ${gitUser}
-    *Report URL:* <${reportUrl}|Run Smoke Test>
-    *Job Steps:*
-    ${stageResults}"""
+*Branch:* ${branchName}    *Job Status:* ${status}    *Actor:* ${gitUser}
+*Report URL:* <${reportUrl}|Run Smoke Test>
+*Job Steps:*
+${stageResults}"""
             ]
         ]
     ]
