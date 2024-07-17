@@ -51,12 +51,12 @@ pipeline {
                 }
             }
         }    
-        stage('echo test') {
+        stage('test adım1') {
             steps {
                 script {
                     try {
-                        sh '''echo "yakin stage test" '''
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: echo test - SUCCESS \n"  // Success emoji
+                        sh '''echo "yakin stage test 1" '''
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: echo test 1 - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: :x: echo test - FAILURE \n"    // Failure emoji
                         throw e
@@ -65,11 +65,12 @@ pipeline {
             }
         }
         
-        stage('Send the notification to Slack via curl') {
+        stage('test adım2') {
             steps {
                 script {
                     try {
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: Send the notification to Slack via curl - SUCCESS \n"  // Success emoji
+                        sh '''echo "yakin stage test 2" '''
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: echo test 2 - SUCCESS \n"  // Success emoji
                     } catch (Exception e) {
                         env.STAGE_RESULTS += "Stage: :x: Send the notification to Slack via curl - FAILURE \n"    // Failure emoji
                         throw e
