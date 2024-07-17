@@ -4,6 +4,9 @@ pipeline {
             yaml """
             apiVersion: v1
             kind: Pod
+            metadata:
+              labels:
+                app: jenkins-server            
             spec:
               containers:
               - name: jnlp
