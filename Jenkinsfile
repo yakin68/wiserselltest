@@ -23,7 +23,7 @@ pipeline {
                     // Initialize an empty list to hold stage results
                     def stageResults = []
                     // Store the list in the environment variable for later use
-                    env.STAGE_RESULTS = stageResults
+                    env.STAGE_RESULTS = ''
                 }
             }
         }
