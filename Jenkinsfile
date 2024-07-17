@@ -16,7 +16,18 @@ pipeline {
     }
 
     stages {
-                
+
+        stage('Initialize') {
+            steps {
+                script {
+                    // Initialize an empty list to hold stage results
+                    def stageResults = []
+                    // Store the list in the environment variable for later use
+                    env.STAGE_RESULTS = stageResults
+                }
+            }
+        }
+        
         stage('Get Git User') {
             steps {
                 script {
