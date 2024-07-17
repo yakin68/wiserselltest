@@ -1,5 +1,33 @@
 pipeline {
-    agent any  
+    agent {
+        kubernetes {
+            yaml """
+            apiVersion: v1
+            kind: Pod
+            metadata:
+              name: agent
+              labels:              
+                app: jenkins-server
+            spec:
+              containers:
+              - name: jnlp
+                image: jenkins/inbound-agent:latest
+                args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+                resources:
+                  requests:
+                    memory: "256Mi"
+                    cpu: "250m"
+                  limits:
+                    memory: "512Mi"
+                    cpu: "500m"
+              - name: awscli
+                image: amazon/aws-cli
+                command:
+                - cat
+                tty: true
+            """
+        }
+    } 
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
