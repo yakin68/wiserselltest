@@ -46,9 +46,9 @@ pipeline {
                     if (mvnStatus != 0) {
                         echo "Maven build failed with exit code ${mvnStatus}"
                         currentBuild.result = 'FAILURE'                                      
-                        env.STAGE_RESULTS += "Stage: :white_check_mark: Test with Maven - SUCCESS \n"  // Success emoji
+                        env.STAGE_RESULTS += "Stage: :x: Test with Maven - FAILURE \n"  // Success emoji
                     } else {
-                        env.STAGE_RESULTS += "Stage: :x: Test with Maven - FAILURE \n"    // Failure emoji
+                        env.STAGE_RESULTS += "Stage: :white_check_mark: Test with Maven - SUCCESS \n"    // Failure emoji
                     }                    
                 }
             }
