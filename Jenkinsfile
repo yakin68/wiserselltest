@@ -5,29 +5,24 @@ pipeline {
             apiVersion: v1
             kind: Pod
             metadata:
-              name: agent
-              labels:              
+              labels:
                 app: jenkins-server
             spec:
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
-                args: ['-url', 'https://jenkins.wisersell.com', '-workDir', '/home/jenkins/agent']
-                resources:
-                  requests:
-                    memory: "256Mi"
-                    cpu: "250m"
-                  limits:
-                    memory: "512Mi"
-                    cpu: "500m"
+                args: ['-url', 'https://jenkins.wisersell.com', '\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
               - name: awscli
                 image: amazon/aws-cli
                 command:
-                - cat
+                - sh
+                - -c
+                - |
+                  while true; do sleep 30; done
                 tty: true
             """
         }
-    } 
+    }
     environment {
         AWS_KEY_ID = credentials('AWS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
